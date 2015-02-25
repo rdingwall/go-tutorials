@@ -30,10 +30,10 @@ func pascalRowR(n int) []int {
 	if n == 0 {
 		return []int{1}
 	}
-	
-	row := make([]int, n + 1)
-	
-	for i := 0; i < n + 1; i++ {
+
+	row := make([]int, n+1)
+
+	for i := 0; i < n+1; i++ {
 		switch i {
 		case 0, n:
 			row[i] = 1
@@ -43,7 +43,7 @@ func pascalRowR(n int) []int {
 			row[i] = prevRow[i-1] + prevRow[i]
 		}
 	}
-	
+
 	return row
 }
 
