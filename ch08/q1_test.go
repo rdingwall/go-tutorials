@@ -29,9 +29,7 @@ func TestFibRecursive(t *testing.T) {
 func fibIterative(n uint) uint {
 	var sum, prev uint = 1, 1
 	for i := uint(1); i < n+1; i++ {
-		tmp := sum
-		sum += prev
-		prev = tmp
+		sum, prev = sum+prev, sum
 	}
 	return sum
 }

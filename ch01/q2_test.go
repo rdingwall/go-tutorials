@@ -20,9 +20,7 @@ func strRev(s []rune) {
 	}
 
 	for i := 0; length-i-1 > i; i++ {
-		tmp := s[i]
-		s[i] = s[length-i-1]
-		s[length-i-1] = tmp
+		s[i], s[length-i-1] = s[length-i-1], s[i]
 	}
 
 	s[length] = -1
