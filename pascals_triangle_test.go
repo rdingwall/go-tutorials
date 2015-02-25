@@ -5,11 +5,10 @@ import (
 )
 
 func pascalRow(n int) []int {
-	rows := make([][]int, n+1)
+	var row, prevRow []int
 
 	for i := 0; i < n+1; i++ {
-		row := make([]int, i+1)
-		rows[i] = row
+		row = make([]int, i+1)
 
 		for j := 0; j < i+1; j++ {
 			switch j {
@@ -17,13 +16,14 @@ func pascalRow(n int) []int {
 				row[j] = 1
 
 			default:
-				prevRow := rows[i-1]
 				row[j] = prevRow[j-1] + prevRow[j]
 			}
 		}
+		
+		prevRow = row
 	}
 
-	return rows[n]
+	return row
 }
 
 func pascalRowR(n int) []int {
