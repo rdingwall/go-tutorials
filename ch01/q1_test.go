@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func hasAllUniqueChars(s string) bool {	
+func hasAllUniqueChars(s string) bool {
 	occurrences := make(map[rune]bool)
 	for _, c := range s {
 		if occurrences[c] {

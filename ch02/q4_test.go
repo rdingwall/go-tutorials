@@ -8,38 +8,38 @@ import (
 
 func addValues(t *testing.T, head1, head2 *listElement) *listElement {
 	// sum elements
-	var sum int;
-	
+	var sum int
+
 	for e, factor := head1, 1; e != nil; e = e.next {
 		sum += e.value * factor
 		factor *= 10
 	}
-	
+
 	for e, factor := head2, 1; e != nil; e = e.next {
 		sum += e.value * factor
 		factor *= 10
 	}
-	
+
 	// build results
 	var output, prev *listElement
-	
-	for ; sum > 0; {
-		
+
+	for sum > 0 {
+
 		e := new(listElement)
 		e.value = sum % 10
-		
+
 		if output == nil {
 			output = e
 		} else {
 			prev.next = e
 		}
-		
+
 		sum /= 10
 		prev = e
 	}
-	
+
 	return output
-	
+
 }
 
 func TestAddValues(t *testing.T) {

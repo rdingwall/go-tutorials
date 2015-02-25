@@ -8,7 +8,7 @@ import (
 )
 
 func isRotation(t *testing.T, s1, s2 string) bool {
-	return strings.Contains(s1 + s1, s2)
+	return strings.Contains(s1+s1, s2)
 }
 
 func TestIsRotation(t *testing.T) {

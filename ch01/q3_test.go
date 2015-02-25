@@ -6,45 +6,45 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func strDedupe(t * testing.T, s []rune) {
+func strDedupe(t *testing.T, s []rune) {
 	writeIndex := 0
 	readIndex := 0
-	
-	if (len(s) < 2) {
+
+	if len(s) < 2 {
 		return
 	}
 
 	// crap but works
 	for {
-		
+
 		if readIndex == len(s) || writeIndex == len(s) {
 			break
 		}
-		
+
 		var i int
 		var found bool
 		for i = 0; i <= writeIndex; i++ {
-			
+
 			if i == readIndex {
 				continue
 			}
-			
+
 			if s[i] == s[readIndex] {
 				found = true
 				break
 			}
 		}
-		
+
 		if found {
 			readIndex++
 			continue
 		}
-		
+
 		s[writeIndex] = s[readIndex]
 		writeIndex++
 		readIndex++
 	}
-	
+
 	// Zero out trailing runes
 	for i := writeIndex; i < len(s); i++ {
 		s[i] = -1

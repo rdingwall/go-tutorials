@@ -10,11 +10,11 @@ func delete(e *listElement) {
 	if e == nil {
 		return
 	}
-	
+
 	if e.next == nil {
 		return
 	}
-	
+
 	e.value = e.next.value
 	e.next = e.next.next
 }

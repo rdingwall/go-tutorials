@@ -6,11 +6,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func strRev(s []rune) {	
+func strRev(s []rune) {
 	if s == nil {
 		return
 	}
-	
+
 	var length int
 	for i, c := range s {
 		if c == -1 {
@@ -18,13 +18,13 @@ func strRev(s []rune) {
 			break
 		}
 	}
-	
-	for i := 0; length - i - 1 > i; i++ {
+
+	for i := 0; length-i-1 > i; i++ {
 		tmp := s[i]
-		s[i] = s[length - i - 1]
-		s[length - i - 1] = tmp
+		s[i] = s[length-i-1]
+		s[length-i-1] = tmp
 	}
-	
+
 	s[length] = -1
 }
 

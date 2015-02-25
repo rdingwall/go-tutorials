@@ -17,7 +17,7 @@ func removeDuplicates(head *listElement) *listElement {
 			values[e.value] = true
 			prev = e
 		}
-		
+
 		e = e.next
 	}
 
@@ -27,7 +27,7 @@ func removeDuplicates(head *listElement) *listElement {
 func removeDuplicates2(head *listElement) *listElement {
 
 	contains := func(head, tail *listElement, value int) bool {
-		for e := head; e != nil && e != tail; e = e.next {			
+		for e := head; e != nil && e != tail; e = e.next {
 			if e.value == value {
 				return true
 			}
@@ -43,7 +43,7 @@ func removeDuplicates2(head *listElement) *listElement {
 		} else {
 			prev = e
 		}
-		
+
 		e = e.next
 	}
 

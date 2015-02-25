@@ -37,24 +37,24 @@ func elementAt(head *listElement, n int) *listElement {
 		if e == nil {
 			return nil
 		}
-		
+
 		e = e.next
 	}
-	
+
 	return e
 }
 
 func printList(head *listElement) string {
 	var b bytes.Buffer
-	
+
 	for e := head; e != nil; e = e.next {
 		b.WriteString(fmt.Sprintf("%v", e.value))
-		
+
 		if e.next != nil {
 			b.WriteString("->")
 		}
 	}
-	
+
 	return b.String()
 }
 
