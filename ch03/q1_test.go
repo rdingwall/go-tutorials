@@ -7,163 +7,138 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ErrAlreadyInitialized = errors.New("already initialized")
-var ErrNotInitialized = errors.New("not initialized")
-var ErrOutOfRange = errors.New("invalid stack")
-var ErrTooManyItems = errors.New("too many items")
+// Describe how you could use a single array to implement three stacks.
 
-type stackData struct {
-	startIndex uint32
-	size       uint32
-	length     uint32
+var (
+	ErrInvalidCapacity = errors.New("invalid capacity")
+	ErrOutOfRange      = errors.New("invalid stack")
+	ErrTooManyItems    = errors.New("too many items")
+)
+
+type MultiStack struct {
+	storage []interface{}
+	stacks  [][]interface{}
 }
 
-type stack struct {
-	elements []interface{}
+func NewMultiStack(count, capacity uint) (ms *MultiStack, err error) {
+	if count == 0 || capacity == 0 {
+		return nil, ErrInvalidCapacity
+	}
 
-	stackCount uint8
-	stackData  []stackData
+	ms = new(MultiStack)
+	ms.storage = make([]interface{}, count*capacity)
+	ms.stacks = make([][]interface{}, count)
+
+	for i := uint(0); i < count; i++ {
+		startIndex := i * capacity
+		capacity := startIndex + capacity
+		ms.stacks[i] = ms.storage[startIndex:startIndex:capacity]
+	}
+
+	return
 }
 
-func (s *stack) initialize(t *testing.T, stackCount uint8, stackSize uint32) error {
-
-	if s.stackCount > 0 {
-		return ErrAlreadyInitialized
-	}
-
-	s.stackData = make([]stackData, stackCount)
-	s.elements = make([]interface{}, uint32(stackCount)*stackSize)
-	s.stackCount = stackCount
-
-	for i := uint8(0); i < stackCount; i++ {
-		s.stackData[i].startIndex = uint32(i) * stackSize
-		s.stackData[i].size = stackSize
-
-		t.Logf("Initialized stack %v (startIndex=%v, size=%v)", i, s.stackData[i].startIndex, s.stackData[i].size)
-	}
-
-	return nil
-}
-
-func (s *stack) push(t *testing.T, stack uint8, value interface{}) error {
-
-	if s.stackCount == 0 {
-		return ErrNotInitialized
-	}
-
-	if stack > s.stackCount-1 {
+func (ms *MultiStack) Push(stack uint, value interface{}) (err error) {
+	if stack+1 > uint(len(ms.stacks)) {
 		return ErrOutOfRange
 	}
 
-	var stackData *stackData = &s.stackData[stack]
+	s := ms.stacks[stack]
 
-	if stackData.length == stackData.size {
+	if len(s) == cap(s) {
 		return ErrTooManyItems
 	}
 
-	index := stackData.startIndex + stackData.length
-	s.elements[index] = value
+	s = s[:len(s)+1]
+	s[len(s)-1] = value
+	ms.stacks[stack] = s
 
-	stackData.length++
-
-	t.Logf("Pushed %v onto stack %v at index=%v (new length=%v)", value, stack, index, stackData.length)
-
-	return nil
+	return
 }
 
-func (s *stack) pop(t *testing.T, stack uint8) (interface{}, error) {
-
-	if s.stackCount == 0 {
-		return nil, ErrNotInitialized
-	}
-
-	if stack > s.stackCount-1 {
+func (ms *MultiStack) Pop(stack uint) (value interface{}, err error) {
+	if stack+1 > uint(len(ms.stacks)) {
 		return nil, ErrOutOfRange
 	}
 
-	var stackData *stackData = &s.stackData[stack]
+	s := ms.stacks[stack]
 
-	if stackData.length == 0 {
-		return nil, nil
+	if len(s) == 0 {
+		return
 	}
 
-	index := stackData.startIndex + stackData.length - 1
-	value := s.elements[index]
+	value = s[len(s)-1]
+	s = s[:len(s)-1]
+	ms.stacks[stack] = s
 
-	stackData.length--
-
-	t.Logf("Popped %v off stack %v from index=%v (new length=%v)", value, stack, index, stackData.length)
-
-	return value, nil
+	return
 }
 
-func TestStack(t *testing.T) {
-	var stack stack
-	assert.NoError(t, stack.initialize(t, 3, 5))
+func TestPushPop(t *testing.T) {
+	ms, err := NewMultiStack(3, 5)
+	assert.NoError(t, err)
 
-	assert.NoError(t, stack.push(t, 0, 1))
-	assert.NoError(t, stack.push(t, 0, 2))
-	assert.NoError(t, stack.push(t, 0, 3))
-	assert.NoError(t, stack.push(t, 0, 4))
-	assert.NoError(t, stack.push(t, 0, 5))
+	assert.NoError(t, ms.Push(0, 1))
+	assert.NoError(t, ms.Push(0, 2))
+	assert.NoError(t, ms.Push(0, 3))
+	assert.NoError(t, ms.Push(0, 4))
+	assert.NoError(t, ms.Push(0, 5))
+	assert.EqualError(t, ms.Push(0, 6), ErrTooManyItems.Error())
 
-	assert.NoError(t, stack.push(t, 1, 'a'))
-	assert.NoError(t, stack.push(t, 1, 'b'))
-	assert.NoError(t, stack.push(t, 1, 'c'))
-	assert.NoError(t, stack.push(t, 1, 'd'))
-	assert.NoError(t, stack.push(t, 1, 'e'))
+	assert.NoError(t, ms.Push(1, 'a'))
+	assert.NoError(t, ms.Push(1, 'b'))
+	assert.NoError(t, ms.Push(1, 'c'))
+	assert.NoError(t, ms.Push(1, 'd'))
+	assert.NoError(t, ms.Push(1, 'e'))
+	assert.EqualError(t, ms.Push(1, 'f'), ErrTooManyItems.Error())
 
-	assert.NoError(t, stack.push(t, 2, 'A'))
-	assert.NoError(t, stack.push(t, 2, 'B'))
-	assert.NoError(t, stack.push(t, 2, 'C'))
-	assert.NoError(t, stack.push(t, 2, 'D'))
-	assert.NoError(t, stack.push(t, 2, 'E'))
+	assert.NoError(t, ms.Push(2, 'A'))
+	assert.NoError(t, ms.Push(2, 'B'))
+	assert.NoError(t, ms.Push(2, 'C'))
+	assert.NoError(t, ms.Push(2, 'D'))
+	assert.NoError(t, ms.Push(2, 'E'))
+	assert.EqualError(t, ms.Push(2, 'F'), ErrTooManyItems.Error())
 
 	getValue := func(value interface{}, err error) interface{} {
 		assert.NoError(t, err)
 		return value
 	}
 
-	assert.Equal(t, 5, getValue(stack.pop(t, 0)))
-	assert.Equal(t, 4, getValue(stack.pop(t, 0)))
-	assert.Equal(t, 3, getValue(stack.pop(t, 0)))
-	assert.Equal(t, 2, getValue(stack.pop(t, 0)))
-	assert.Equal(t, 1, getValue(stack.pop(t, 0)))
-	assert.Equal(t, nil, getValue(stack.pop(t, 0)))
+	assert.Equal(t, 5, getValue(ms.Pop(0)))
+	assert.Equal(t, 4, getValue(ms.Pop(0)))
+	assert.Equal(t, 3, getValue(ms.Pop(0)))
+	assert.Equal(t, 2, getValue(ms.Pop(0)))
+	assert.Equal(t, 1, getValue(ms.Pop(0)))
+	assert.Equal(t, nil, getValue(ms.Pop(0)))
 
-	assert.Equal(t, 'e', getValue(stack.pop(t, 1)))
-	assert.Equal(t, 'd', getValue(stack.pop(t, 1)))
-	assert.Equal(t, 'c', getValue(stack.pop(t, 1)))
-	assert.Equal(t, 'b', getValue(stack.pop(t, 1)))
-	assert.Equal(t, 'a', getValue(stack.pop(t, 1)))
-	assert.Equal(t, nil, getValue(stack.pop(t, 1)))
+	assert.Equal(t, 'e', getValue(ms.Pop(1)))
+	assert.Equal(t, 'd', getValue(ms.Pop(1)))
+	assert.Equal(t, 'c', getValue(ms.Pop(1)))
+	assert.Equal(t, 'b', getValue(ms.Pop(1)))
+	assert.Equal(t, 'a', getValue(ms.Pop(1)))
+	assert.Equal(t, nil, getValue(ms.Pop(1)))
 
-	assert.Equal(t, 'E', getValue(stack.pop(t, 2)))
-	assert.Equal(t, 'D', getValue(stack.pop(t, 2)))
-	assert.Equal(t, 'C', getValue(stack.pop(t, 2)))
-	assert.Equal(t, 'B', getValue(stack.pop(t, 2)))
-	assert.Equal(t, 'A', getValue(stack.pop(t, 2)))
-	assert.Equal(t, nil, getValue(stack.pop(t, 2)))
+	assert.Equal(t, 'E', getValue(ms.Pop(2)))
+	assert.Equal(t, 'D', getValue(ms.Pop(2)))
+	assert.Equal(t, 'C', getValue(ms.Pop(2)))
+	assert.Equal(t, 'B', getValue(ms.Pop(2)))
+	assert.Equal(t, 'A', getValue(ms.Pop(2)))
+	assert.Equal(t, nil, getValue(ms.Pop(2)))
 }
 
-func TestErrNotInitialized(t *testing.T) {
-	var stack stack
-
-	_, err := stack.pop(t, 0)
-	assert.EqualError(t, err, ErrNotInitialized.Error())
-
-	err = stack.push(t, 0, 'A')
-	assert.EqualError(t, err, ErrNotInitialized.Error())
+func TestErrInvalidCapacity(t *testing.T) {
+	ms, err := NewMultiStack(0, 0)
+	assert.Nil(t, ms)
+	assert.EqualError(t, err, ErrInvalidCapacity.Error())
 }
 
 func TestErrOutOfRange(t *testing.T) {
-	var stack stack
+	ms, err := NewMultiStack(3, 5)
+	assert.NoError(t, err)
 
-	assert.NoError(t, stack.initialize(t, 3, 5))
-
-	err := stack.push(t, 99, 'A')
+	err = ms.Push(99, 'A')
 	assert.EqualError(t, err, ErrOutOfRange.Error())
 
-	_, err = stack.pop(t, 99)
+	_, err = ms.Pop(99)
 	assert.EqualError(t, err, ErrOutOfRange.Error())
 }
