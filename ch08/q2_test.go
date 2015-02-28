@@ -12,9 +12,11 @@ import (
 
 func CalculatePaths(t *testing.T, n, x, y uint) uint {
 	switch {
-	case x+1 == n && y+1 == n:
+	case x+1 >= n && y+1 >= n:
 		return 0
-	case x+1 == n || y+1 == n:
+	case x+1 == n:
+		fallthrough
+	case y+1 == n:
 		return 1
 	default:
 		return CalculatePaths(t, n, x+1, y) + CalculatePaths(t, n, x, y+1)
@@ -22,9 +24,13 @@ func CalculatePaths(t *testing.T, n, x, y uint) uint {
 }
 
 func TestCalculatePathsFromStart(t *testing.T) {
-	assert.Equal(t, 70, int(CalculatePaths(t, 5, 0, 0)))
+	assert.Equal(t, 70, CalculatePaths(t, 5, 0, 0))
 }
 
 func TestCalculatePathsFromEnd(t *testing.T) {
-	assert.Equal(t, 0, int(CalculatePaths(t, 5, 4, 4)))
+	assert.Equal(t, 0, CalculatePaths(t, 5, 4, 4))
+}
+
+func TestCalculatePathsOutOfRange(t *testing.T) {
+	assert.Equal(t, 0, CalculatePaths(t, 5, 9, 8))
 }
