@@ -1,4 +1,4 @@
-package main
+package ch01
 
 import (
 	"testing"
@@ -6,7 +6,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func areAnagrams(t *testing.T, s1 string, s2 string) bool {
+// Write a method to decide if two strings are anagrams or not.
+
+func AreAnagrams(t *testing.T, s1 string, s2 string) bool {
 	if len(s1) != len(s2) {
 		return false
 	}
@@ -52,29 +54,29 @@ func areAnagrams(t *testing.T, s1 string, s2 string) bool {
 }
 
 func TestAreAnagrams_True(t *testing.T) {
-	assert.True(t, areAnagrams(t, "abcde", "becad"))
+	assert.True(t, AreAnagrams(t, "abcde", "becad"))
 }
 
 func TestAreAnagrams_False(t *testing.T) {
-	assert.False(t, areAnagrams(t, "bbcde", "becxd"))
+	assert.False(t, AreAnagrams(t, "bbcde", "becxd"))
 }
 
 func TestAreAnagrams_False2(t *testing.T) {
-	assert.False(t, areAnagrams(t, "bbcdd", "becxd"))
+	assert.False(t, AreAnagrams(t, "bbcdd", "becxd"))
 }
 
 func TestAreAnagrams_Same(t *testing.T) {
-	assert.True(t, areAnagrams(t, "abcde", "abcde"))
+	assert.True(t, AreAnagrams(t, "abcde", "abcde"))
 }
 
 func TestAreAnagrams_Empty(t *testing.T) {
-	assert.True(t, areAnagrams(t, "", ""))
+	assert.True(t, AreAnagrams(t, "", ""))
 }
 
 func TestAreAnagrams_EmptyNonEmpty(t *testing.T) {
-	assert.False(t, areAnagrams(t, "", "xxx"))
+	assert.False(t, AreAnagrams(t, "", "xxx"))
 }
 
 func TestAreAnagrams_DifferentLengths(t *testing.T) {
-	assert.False(t, areAnagrams(t, "abcdexxx", "becxd"))
+	assert.False(t, AreAnagrams(t, "abcdexxx", "becxd"))
 }

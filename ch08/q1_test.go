@@ -1,4 +1,4 @@
-package main
+package ch08
 
 import (
 	"testing"
@@ -28,12 +28,13 @@ func TestFibRecursive(t *testing.T) {
 	assert.Equal(t, 13, FibRecursive(5))
 }
 
-func FibIterative(n uint) uint {
-	var sum, prev uint = 1, 1
+func FibIterative(n uint) (sum uint) {
+	sum = 1
+	var prev uint = 1
 	for i := uint(1); i < n+1; i++ {
 		sum, prev = sum+prev, sum
 	}
-	return sum
+	return
 }
 
 func TestFibIterative(t *testing.T) {

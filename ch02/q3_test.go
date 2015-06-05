@@ -1,4 +1,4 @@
-package main
+package ch02
 
 import (
 	"testing"
@@ -6,7 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func delete(e *listElement) {
+/* Implement an algorithm to delete a node in the middle of a single linked
+   list, given only access to that node.
+
+   EXAMPLE:
+   Input: the node ‘c’ from the linked list a->b->c->d->e
+   Result: nothing is returned, but the new linked list looks like a->b->d->e */
+
+func Delete(e *ListElement) {
 	if e == nil {
 		return
 	}
@@ -20,15 +27,15 @@ func delete(e *listElement) {
 }
 
 func TestDelete(t *testing.T) {
-	head := toLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
-	delete(elementAt(head, 2))
-	assert.Equal(t, "7->2->2->4->5->2->3", printList(head))
+	head := MakeLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
+	Delete(ElementAt(head, 2))
+	assert.Equal(t, "7->2->2->4->5->2->3", PrintLinkedList(head))
 }
 
 func TestDelete_Head(t *testing.T) {
-	head := toLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
-	delete(elementAt(head, 0))
-	assert.Equal(t, "2->3->2->4->5->2->3", printList(head))
+	head := MakeLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
+	Delete(ElementAt(head, 0))
+	assert.Equal(t, "2->3->2->4->5->2->3", PrintLinkedList(head))
 }
 
 // not possible to delete at tail

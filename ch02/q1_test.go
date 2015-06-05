@@ -1,4 +1,4 @@
-package main
+package ch02
 
 import (
 	"testing"
@@ -6,9 +6,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func removeDuplicates(head *listElement) *listElement {
+// Write code to remove duplicates from an unsorted linked list.
+
+func RemoveDuplicates(head *ListElement) *ListElement {
 	values := make(map[int]bool, 1)
-	var prev *listElement
+	var prev *ListElement
 
 	for e := head; e != nil; {
 		if values[e.value] {
@@ -24,9 +26,18 @@ func removeDuplicates(head *listElement) *listElement {
 	return head
 }
 
-func removeDuplicates2(head *listElement) *listElement {
+func TestRemoveDuplicates(t *testing.T) {
+	head := MakeLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
+	head = RemoveDuplicates(head)
+	assert.Equal(t, "7->2->3->4->5", PrintLinkedList(head))
+}
 
-	contains := func(head, tail *listElement, value int) bool {
+/* FOLLOW UP: How would you solve this problem if a temporary buffer is not
+   allowed? */
+
+func RemoveDuplicates2(head *ListElement) *ListElement {
+
+	contains := func(head, tail *ListElement, value int) bool {
 		for e := head; e != nil && e != tail; e = e.next {
 			if e.value == value {
 				return true
@@ -35,7 +46,7 @@ func removeDuplicates2(head *listElement) *listElement {
 		return false
 	}
 
-	var prev *listElement
+	var prev *ListElement
 
 	for e := head; e != nil; {
 		if contains(head, e, e.value) {
@@ -50,14 +61,8 @@ func removeDuplicates2(head *listElement) *listElement {
 	return head
 }
 
-func TestRemoveDuplicates(t *testing.T) {
-	head := toLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
-	head = removeDuplicates(head)
-	assert.Equal(t, "7->2->3->4->5", printList(head))
-}
-
 func TestRemoveDuplicates_NoBuffer(t *testing.T) {
-	head := toLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
-	head = removeDuplicates2(head)
-	assert.Equal(t, "7->2->3->4->5", printList(head))
+	head := MakeLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
+	head = RemoveDuplicates2(head)
+	assert.Equal(t, "7->2->3->4->5", PrintLinkedList(head))
 }

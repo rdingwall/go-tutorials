@@ -1,4 +1,4 @@
-package main
+package ch01
 
 import (
 	"testing"
@@ -6,7 +6,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func hasAllUniqueChars(s string) bool {
+// Implement an algorithm to determine if a string has all unique characters.
+
+func HasAllUniqueChars(s string) bool {
 	occurrences := make(map[rune]bool)
 	for _, c := range s {
 		if occurrences[c] {
@@ -18,13 +20,13 @@ func hasAllUniqueChars(s string) bool {
 }
 
 func TestHasAllUniqueChars_Unique(t *testing.T) {
-	assert.True(t, hasAllUniqueChars("abcdefghijklmnopqrstuvwyxz"))
+	assert.True(t, HasAllUniqueChars("abcdefghijklmnopqrstuvwyxz"))
 }
 
 func TestHasAllUniqueChars_NonUnique(t *testing.T) {
-	assert.False(t, hasAllUniqueChars("abcdefggg"))
+	assert.False(t, HasAllUniqueChars("abcdefggg"))
 }
 
 func TestHasAllUniqueChars_ZeroValue(t *testing.T) {
-	assert.False(t, hasAllUniqueChars(""))
+	assert.False(t, HasAllUniqueChars(""))
 }

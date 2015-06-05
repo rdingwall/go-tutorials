@@ -1,4 +1,4 @@
-package main
+package ch01
 
 import (
 	"testing"
@@ -6,7 +6,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func strDedupe(t *testing.T, s []rune) {
+/* Design an algorithm and write code to remove the duplicate characters in a
+   string without using any additional buffer. NOTE: One or two additional
+   variables are fine. An extra copy of the array is not. */
+
+func StrDedupe(t *testing.T, s []rune) {
 	writeIndex := 0
 	readIndex := 0
 
@@ -51,26 +55,26 @@ func strDedupe(t *testing.T, s []rune) {
 	}
 }
 
-func TestRemoveDuplicateChars_Consecutive(t *testing.T) {
+func TestStrDedupe_Consecutive(t *testing.T) {
 	str := []rune{'a', 'b', 'c', 'd', 'e', 'e', 'e', 'f', 'g', 'g', 'h'}
-	strDedupe(t, str)
+	StrDedupe(t, str)
 	assert.Equal(t, []rune{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', -1, -1, -1}, str)
 }
 
-func TestRemoveDuplicateChars_NonConsecutive(t *testing.T) {
+func TestStrDedupe_NonConsecutive(t *testing.T) {
 	str := []rune{'a', 'b', 'c', 'd', 'e', 'f', 'e', 'f', 'g', 'h', 'g'}
-	strDedupe(t, str)
+	StrDedupe(t, str)
 	assert.Equal(t, []rune{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', -1, -1, -1}, str)
 }
 
-func TestRemoveDuplicateChars_Trailing(t *testing.T) {
+func TestStrDedupe_Trailing(t *testing.T) {
 	str := []rune{'a', 'a', 'a'}
-	strDedupe(t, str)
+	StrDedupe(t, str)
 	assert.Equal(t, []rune{'a', -1, -1}, str)
 }
 
-func TestRemoveDuplicateChars_ZeroValue(t *testing.T) {
+func TestStrDedupe_ZeroValue(t *testing.T) {
 	var str []rune
-	strDedupe(t, str)
+	StrDedupe(t, str)
 	assert.Equal(t, str, str)
 }

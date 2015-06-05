@@ -1,4 +1,4 @@
-package main
+package ch02
 
 import (
 	"testing"
@@ -6,9 +6,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func findNthToLastElement(t *testing.T, head *listElement, n int) *listElement {
+/* Implement an algorithm to find the nth to last element of a singly linked
+   list. */
 
-	nthLast := head
+func FindNthToLastElement(t *testing.T, head *ListElement, n int) (nthLast *ListElement) {
+
+	nthLast = head
 	e := head
 
 	// two pointers, gap between them
@@ -25,30 +28,30 @@ func findNthToLastElement(t *testing.T, head *listElement, n int) *listElement {
 		nthLast = nthLast.next
 	}
 
-	return nthLast
+	return
 }
 
 func TestFindNthToLastElement(t *testing.T) {
-	head := toLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
-	e := findNthToLastElement(t, head, 3)
+	head := MakeLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
+	e := FindNthToLastElement(t, head, 3)
 	assert.Equal(t, 5, e.value)
 }
 
 func TestFindNthToLastElement_OutOfRange(t *testing.T) {
-	head := toLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
-	e := findNthToLastElement(t, head, 999)
+	head := MakeLinkedList(7, 2, 3, 2, 4, 5, 2, 3)
+	e := FindNthToLastElement(t, head, 999)
 
-	assert.Equal(t, (*listElement)(nil), e)
+	assert.Equal(t, (*ListElement)(nil), e)
 }
 
 func TestFindNthToLastElement_First(t *testing.T) {
-	head := toLinkedList(7, 2, 3)
-	e := findNthToLastElement(t, head, 3)
+	head := MakeLinkedList(7, 2, 3)
+	e := FindNthToLastElement(t, head, 3)
 	assert.Equal(t, 7, e.value)
 }
 
 func TestFindNthToLastElement_Last(t *testing.T) {
-	head := toLinkedList(7, 2, 3)
-	e := findNthToLastElement(t, head, 1)
+	head := MakeLinkedList(7, 2, 3)
+	e := FindNthToLastElement(t, head, 1)
 	assert.Equal(t, 3, e.value)
 }

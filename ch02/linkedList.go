@@ -1,20 +1,20 @@
-package main
+package ch02
 
 import (
 	"bytes"
 	"fmt"
 )
 
-type listElement struct {
+type ListElement struct {
 	value int
-	next  *listElement
+	next  *ListElement
 }
 
-func toLinkedList(values ...int) *listElement {
-	var head, tail *listElement
+func MakeLinkedList(values ...int) *ListElement {
+	var head, tail *ListElement
 
 	for _, value := range values {
-		e := new(listElement)
+		e := new(ListElement)
 		e.value = value
 
 		if head == nil {
@@ -31,7 +31,7 @@ func toLinkedList(values ...int) *listElement {
 	return head
 }
 
-func elementAt(head *listElement, n int) *listElement {
+func ElementAt(head *ListElement, n int) *ListElement {
 	e := head
 	for i := 0; i < n; i++ {
 		if e == nil {
@@ -44,7 +44,7 @@ func elementAt(head *listElement, n int) *listElement {
 	return e
 }
 
-func printList(head *listElement) string {
+func PrintLinkedList(head *ListElement) string {
 	var b bytes.Buffer
 
 	for e := head; e != nil; e = e.next {
@@ -58,7 +58,7 @@ func printList(head *listElement) string {
 	return b.String()
 }
 
-func toSlice(head *listElement) []int {
+func MakeSlice(head *ListElement) []int {
 	values := make([]int, 0)
 	for e := head; e != nil; e = e.next {
 		values = append(values, e.value)

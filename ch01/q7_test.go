@@ -1,4 +1,4 @@
-package main
+package ch01
 
 import (
 	"testing"
@@ -6,7 +6,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func writeZeros(t *testing.T, matrix [][]int) {
+/* Write an algorithm such that if an element in an MxN matrix is 0, its entire
+   row and column is set to 0. */
+
+func WriteZeros(t *testing.T, matrix [][]int) {
 
 	rowZero := func(matrix [][]int, y int) {
 		row := matrix[y]
@@ -31,7 +34,7 @@ func writeZeros(t *testing.T, matrix [][]int) {
 	}
 }
 
-func TestRowColSetToZero(t *testing.T) {
+func TestWriteZeros(t *testing.T) {
 
 	matrix := [][]int{
 		{1, 2, 3},
@@ -45,7 +48,7 @@ func TestRowColSetToZero(t *testing.T) {
 		{7, 8, 0},
 	}
 
-	writeZeros(t, matrix)
+	WriteZeros(t, matrix)
 
 	assert.Equal(t, expected, matrix)
 }

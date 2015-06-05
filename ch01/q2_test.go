@@ -1,4 +1,4 @@
-package main
+package ch01
 
 import (
 	"testing"
@@ -6,7 +6,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func strRev(s []rune) {
+// Write code to reverse a C-Style String.
+
+func StrRev(s []rune) {
+
 	if s == nil {
 		return
 	}
@@ -26,20 +29,20 @@ func strRev(s []rune) {
 	s[length] = -1
 }
 
-func TestReverseCStyleString(t *testing.T) {
+func TestStrRev(t *testing.T) {
 	str := []rune{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', -1}
-	strRev(str)
+	StrRev(str)
 	assert.Equal(t, []rune{'h', 'g', 'f', 'e', 'd', 'c', 'b', 'a', -1}, str)
 }
 
-func TestReverseCStyleString_ZeroValue(t *testing.T) {
+func TestStrRev_ZeroValue(t *testing.T) {
 	var str []rune
-	strRev(str)
+	StrRev(str)
 	assert.Equal(t, str, str)
 }
 
-func TestReverseCStyleString_Empty(t *testing.T) {
+func TestStrRev_Empty(t *testing.T) {
 	str := []rune{-1}
-	strRev(str)
+	StrRev(str)
 	assert.Equal(t, []rune{-1}, str)
 }

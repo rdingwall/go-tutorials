@@ -1,4 +1,4 @@
-package main
+package ch01
 
 import (
 	"testing"
@@ -6,23 +6,24 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func rotate(t *testing.T, image [][]int) [][]int {
+/* Given an image represented by an NxN matrix, where each pixel in the image
+   is 4 bytes, write a method to rotate the image by 90 degrees. */
+
+func Rotate(t *testing.T, image [][]int) (output [][]int) {
 	n := len(image)
 
-	output := make([][]int, n)
+	output = make([][]int, n)
 	for y := range image {
 		output[y] = make([]int, n)
 	}
 
 	for y, row := range image {
 		for x := range row {
-			t.Logf("(%v, %v) = (%v, %v)", y, x, n-x-1, y)
-			t.Logf("%v = %v", output[y][x], image[n-x-1][y])
 			output[y][x] = image[n-x-1][y]
 		}
 	}
 
-	return output
+	return
 }
 
 func TestRotate(t *testing.T) {
@@ -39,5 +40,5 @@ func TestRotate(t *testing.T) {
 		{9, 6, 3},
 	}
 
-	assert.Equal(t, expected, rotate(t, image))
+	assert.Equal(t, expected, Rotate(t, image))
 }
