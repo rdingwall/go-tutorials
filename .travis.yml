@@ -4,5 +4,5 @@ notificaitons:
     recipients: rdingwall@gmail.com
     on_success: change
     on_failure: always
-before_script:
-- go get github.com/stretchr/testify/assert
+before_script: go get github.com/stretchr/testify/assert
+script: go test ./ch01 ./ch02 ./ch03 ./ch08
