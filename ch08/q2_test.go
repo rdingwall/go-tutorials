@@ -24,13 +24,13 @@ func CalculatePaths(t *testing.T, n, x, y uint) uint {
 }
 
 func TestCalculatePathsFromStart(t *testing.T) {
-	assert.Equal(t, 70, CalculatePaths(t, 5, 0, 0))
+	assert.Equal(t, uint(70), CalculatePaths(t, 5, 0, 0))
 }
 
 func TestCalculatePathsFromEnd(t *testing.T) {
-	assert.Equal(t, 0, CalculatePaths(t, 5, 4, 4))
+	assert.Equal(t, uint(0), CalculatePaths(t, 5, 4, 4))
 }
 
 func TestCalculatePathsOutOfRange(t *testing.T) {
-	assert.Equal(t, 0, CalculatePaths(t, 5, 9, 8))
+	assert.Equal(t, uint(0), CalculatePaths(t, 5, 9, 8))
 }
